@@ -1,0 +1,31 @@
+{
+  "system": "AUREL-Mem-EC",
+  "version": "v3-ec-20261030",
+  "candidate_limit": 10,
+  "answer_input_bound": 117760,
+  "files": {
+    "aurel_ec/__init__.py": "615a05efa953d29ddd22caa984d9c35aea9289ade064fd52d5e4185d9f456d21",
+    "aurel_ec/reorder_evidence.py": "c51202070a629ecde49779a7efcfcf58b1b52a87fcc00d18364f8d48912f4513",
+    "aurel_ec/service.py": "c5da9e4294edd555a4cdf679949af231dc76307c755a777dde66d42cf65325a8",
+    "m2a_cpu/__init__.py": "e6e2a1e6c4321c323d2cf7de7dfa049c4e9b7d4cf124cce3b5e2ca6782c0a561",
+    "m2a_cpu/answering.py": "04a8a68534e6086e802acda07a54b52570216a734a2ebeb6128e294f61c9a155",
+    "m2a_cpu/aurel_adapter.py": "ae9987afc59e445af29013e828c4eb082f024fd45116a0bfc0985e315c6f0200",
+    "m2a_cpu/aurel_slots.py": "7cc6ca762f583b7b5483fcc5e39cb2d0955d7c0fb3485314fe5b54095dc1f6a9",
+    "m2a_cpu/clients.py": "d4f2315643ac55973b670f05bfbe6211f3725fd796c45673c9de843288984a05",
+    "m2a_cpu/config.py": "ded7c9511abcc66c9c38a152e6d64fc64257b6a74ceab3242255c419d0252c93",
+    "m2a_cpu/evaluation.py": "20e9432d4771693345ab07a56ec78e4798b430b48c7ad3875b2d8cf30ee7d83e",
+    "m2a_cpu/telemetry.py": "881a145008b7456a49f243ca54b67b2e93219a8dfe18a349d13b15cdf6ffb11a",
+    "vendor/aurel/fusion_memory/__init__.py": "27e8febb48ada44153ea2add9969a2c50a9831a74d9755fdd53c549a888b1cc2",
+    "vendor/aurel/fusion_memory/__main__.py": "0b650fec843e60e97bba2d17e87d5e4df539f8a800cfcfcc359a60133db120ae",
+    "vendor/aurel/fusion_memory/app.py": "ea92cf6890bb353b8528b0b2e1d490c3025e267842a624015b832a8636c4045d",
+    "vendor/aurel/fusion_memory/config.py": "9a72222670d1850248b7789c000ec5656ec5aafeabaec927bbdf52be0e01dc79",
+    "vendor/aurel/fusion_memory/identity.py": "a272cc7ce669387fe44035061f0b207a6af76b8036c076f1581d7977db61ddaa",
+    "vendor/aurel/fusion_memory/provider.py": "3a752c16b5e8b1efac2858f3b86f2258d0e1a238716b018d1fbd6c21f2cb4291",
+    "vendor/aurel/fusion_memory/retrieval.py": "c44d482e224ac45f3d5d30515ef9243d109dc0c4b54e621e74748d1194369477",
+    "vendor/aurel/fusion_memory/schemas.py": "6c1a551b3dd01f0c44fcaeda27c235657a19120f25247d606ecb0d0a516042b0",
+    "vendor/aurel/fusion_memory/storage.py": "2f8a9a32410beac7399582845b453c107c1a30d01967a7c043ef50dbf8db2bdf",
+    "source-lock.json": "e0a35450337d76b2c7715f28c19f7d8f7dd4a5a44b10164f7397040f13f1e897",
+    "requirements.lock.txt": "1331c0dfa9030e67bfda28caf1d52a6eb707e8bdf1f06a44416df24c7299e635",
+    "deploy/run.sh": "803f55043f5ec2fd58ec4974b8abce41f4864ab4891569c32c26973c30dbef68"
+  }
+}

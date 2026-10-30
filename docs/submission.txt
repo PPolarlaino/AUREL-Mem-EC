@@ -1,0 +1,39 @@
+System: AUREL-Mem-EC
+Version: v3-ec-20261030
+Track: Multimodal
+Division intended: Open-source Methods
+Contact / organization: USER INPUT REQUIRED
+Public repository: https://github.com/PPolarlaino/AUREL-Mem-EC
+Fixed commit: see submitted release commit
+Add endpoint: PENDING STABLE PUBLIC URL /add
+Search endpoint: PENDING STABLE PUBLIC URL /search
+Health endpoint: PENDING STABLE PUBLIC URL /healthz
+Authentication: Authorization: Token; dedicated private Memory System Key
+Proposed Add concurrency: 1
+Proposed Search concurrency: 1
+
+Method: v3 typed visual/OCR/relation extraction and field-budgeted embeddings,
+hybrid retrieval with source-time neighbors, whole-record recovery, then
+prefix-preserving evidence completion. Search returns evidence, never the final
+answer. Reused AUREL-Mem source and shared transport are disclosed by source-lock.
+
+Models: gpt-4o-mini generation/vision; text-embedding-v4,1024 dimensions.
+No local GPU or model training. The platform performs Answer/Eval.
+
+Operational limits: single worker; serial model transport; no automatic network
+retries;120-second upstream timeout per request; synchronous multi-call Add;
+48 MiB request body;30 MiB total decoded input image bytes;1024 messages per Add;
+up to10 selected candidate records;30 MiB decoded image bytes per response.
+Large writes may require multiple model calls. Full-scale throughput unmeasured.
+
+Evidence: local Brand29 development study44.83% vs original37.93% using a local
+GPT-4o-mini proxy judge. This is not an official leaderboard score. The production
+wrapper has offline tests but has not passed official Smoke. No full-run readiness
+or qualification checkbox should be asserted before corresponding verification.
+
+The project owner confirmed collaborator permission for public release of this
+modified version on2026-10-30. No blanket upstream relicensing is asserted.
+
+Pending external prerequisites: stable reachable endpoint, dedicated service key submitted
+through the approved platform flow, contact details, review/Eval Key issuance,
+and a newly approved model request budget. Existing261 allowance is exhausted.

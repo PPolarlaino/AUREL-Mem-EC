@@ -1,4 +1,4 @@
-"""Deploy the frozen v3 + evidence-completion method as authenticated Add/Search."""
+"""Deploy v4 source-grounded evidence selection with evidence completion as authenticated Add/Search."""
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
@@ -20,10 +20,11 @@ from m2a_cpu.clients import APIClient, APIError, BudgetError, BudgetLedger
 from m2a_cpu.config import load_config, read_env_file
 from m2a_cpu.telemetry import api_context
 from .reorder_evidence import reorder_evidence
+from .evidence_selector import select_evidence, PROTOCOL as SELECTOR_PROTOCOL
 
 ROOT = Path(__file__).resolve().parents[1]
 SYSTEM_NAME = "AUREL-Mem-EC"
-VERSION = "v3-ec-20261030"
+VERSION = "v4-support-20261031"
 # This is one public, dataset-independent delivery profile. No routing by IDs.
 # memeye selects the frozen generic local packing prompt; no Answer is executed.
 ANSWER_CONFIG = {"dataset": "memeye", "model": "gpt-4o-mini", "context_window": 128000,
@@ -67,7 +68,7 @@ def complete_evidence(query, options, evidence):
     return {"data": result}, audit
 
 
-def create_service(memory, token, ready=lambda: True):
+def create_service(memory, token, ready=lambda: True, selector_client=None, audit_path=None):
     """An injectable boundary for offline HTTP tests; the real factory is below."""
     if not isinstance(token, str) or len(token) < 32 or any(c.isspace() for c in token):
         raise ValueError("A dedicated service token of at least32 characters is required")
@@ -108,7 +109,8 @@ def create_service(memory, token, ready=lambda: True):
     @app.get("/version")
     def version():
         return {"system": SYSTEM_NAME, "version": VERSION, "candidate_limit": CANDIDATE_LIMIT,
-                "method": "aurel-v3-source-slots-whole-records-evidence-completion",
+                "method": "aurel-v4-query-aware-evidence-selection-and-completion",
+                "evidence_selector": SELECTOR_PROTOCOL,
                 "generation_model": "gpt-4o-mini", "embedding_model": "text-embedding-v4",
                 "embedding_dimensions": 1024, "official_score": None}
 
@@ -123,12 +125,28 @@ def create_service(memory, token, ready=lambda: True):
                 return JSONResponse({"detail": "model_allowance_unavailable"}, status_code=503)
             scope = hashlib.sha256(validated["user_id"].encode()).hexdigest()
             try:
-                with api_context(run_id="aml-v3-ec-20261030", stage=operation, scope_hash=scope):
+                with api_context(run_id="aml-" + VERSION, stage=operation, scope_hash=scope,
+                                 qid=(hashlib.sha256(json.dumps(validated.get("query"), ensure_ascii=False, sort_keys=True).encode()).hexdigest() if operation == "search" else None)):
                     if operation == "add":
                         return memory.add(validated)
                     validated["top_k"] = min(validated["top_k"], CANDIDATE_LIMIT)
                     result = memory.search(validated)
-                    return complete_evidence(validated["query"], validated.get("options"), result["data"])[0]
+                    evidence = result["data"]
+                    selection = {"protocol": "disabled_test_only"}
+                    if selector_client is not None:
+                        evidence, selection = select_evidence(selector_client, validated["query"],
+                                                              validated.get("options"), evidence)
+                    delivered, packing = complete_evidence(validated["query"], validated.get("options"), evidence)
+                    if audit_path is not None:
+                        # Operational counts and opaque hashes only; no queries,
+                        # source records, images, predictions or credentials.
+                        diagnostic = {"version": VERSION, "scope_hash": scope,
+                            "query_hash": hashlib.sha256(json.dumps(validated["query"], ensure_ascii=False, sort_keys=True).encode()).hexdigest(),
+                            "selection": selection, "packing": packing,
+                            "delivered_count": len(delivered["data"])}
+                        with Path(audit_path).open("a") as stream:
+                            stream.write(json.dumps(diagnostic, ensure_ascii=False) + "\n")
+                    return delivered
             except memory.package.storage.ConflictError:
                 return JSONResponse({"detail": "request_id_conflict"}, status_code=409)
             except (APIError, BudgetError, memory.package.provider.UpstreamError):
@@ -185,4 +203,5 @@ def app_factory():
             ledger._check(db)
             used = db.execute("SELECT COUNT(*) FROM budget_attempts").fetchone()[0]
         return used < policy["max_requests"]
-    return create_service(memory, token, ready)
+    return create_service(memory, token, ready, selector_client=generation,
+                          audit_path=state / "search-diagnostics.jsonl")

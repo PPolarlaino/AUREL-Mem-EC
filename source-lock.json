@@ -20,6 +20,8 @@
     "vendor/aurel/fusion_memory/app.py": "ea92cf6890bb353b8528b0b2e1d490c3025e267842a624015b832a8636c4045d",
     "vendor/aurel/fusion_memory/identity.py": "a272cc7ce669387fe44035061f0b207a6af76b8036c076f1581d7977db61ddaa",
     "vendor/aurel/fusion_memory/__main__.py": "0b650fec843e60e97bba2d17e87d5e4df539f8a800cfcfcc359a60133db120ae",
-    "aurel_ec/reorder_evidence.py": "c51202070a629ecde49779a7efcfcf58b1b52a87fcc00d18364f8d48912f4513"
-  }
+    "aurel_ec/reorder_evidence.py": "c51202070a629ecde49779a7efcfcf58b1b52a87fcc00d18364f8d48912f4513",
+    "aurel_ec/evidence_selector.py": "1cef9629c8f1b585aa488886c7a1267666c615596c927fd987e5f62b91ab5ccd"
+  },
+  "derived_from_release": "v3-ec-20261030 @ 1b4da2b5b3334a9019811c3a880f7d7dd21e8f53"
 }

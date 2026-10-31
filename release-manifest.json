@@ -1,12 +1,21 @@
 {
   "system": "AUREL-Mem-EC",
-  "version": "v3-ec-20261030",
+  "version": "v4-support-20261031",
   "candidate_limit": 10,
-  "answer_input_bound": 117760,
+  "selector_protocol": "evidence-support-selector-v1",
+  "selector_input_limit": 90000,
+  "selector_output_limit": 600,
   "files": {
+    ".gitignore": "abcf332f5aa81655e85f35716e956ce283e684d83accd8ff9da6daa410d8269c",
+    "README.md": "e6f75bcac090ad3ecc162234e83a821e202f1e76c8db9f2a6dafc588063e7ccd",
     "aurel_ec/__init__.py": "615a05efa953d29ddd22caa984d9c35aea9289ade064fd52d5e4185d9f456d21",
+    "aurel_ec/evidence_selector.py": "1cef9629c8f1b585aa488886c7a1267666c615596c927fd987e5f62b91ab5ccd",
     "aurel_ec/reorder_evidence.py": "c51202070a629ecde49779a7efcfcf58b1b52a87fcc00d18364f8d48912f4513",
-    "aurel_ec/service.py": "c5da9e4294edd555a4cdf679949af231dc76307c755a777dde66d42cf65325a8",
+    "aurel_ec/service.py": "2b38d01c30669c9cfa56de5d94c8dabdaa3032ea15ffeca03a47a591d5bbe0ac",
+    "deploy/budget.disabled.json": "34099867b1ee486cc5b2cf6923dbd0adf2f784890a476fc46799198a144e445b",
+    "deploy/run.sh": "803f55043f5ec2fd58ec4974b8abce41f4864ab4891569c32c26973c30dbef68",
+    "docs/submission.txt": "bd2a4da6a4e7a26f4a0866ed5f308057a71423f0594f8d04435acf8c6c61eab7",
+    "docs/upstream-research-disclosure.md": "2bcb6cf1878f30bfeb2e6350035636831e3d1b4a6aad6f045cb0599a6181355d",
     "m2a_cpu/__init__.py": "e6e2a1e6c4321c323d2cf7de7dfa049c4e9b7d4cf124cce3b5e2ca6782c0a561",
     "m2a_cpu/answering.py": "04a8a68534e6086e802acda07a54b52570216a734a2ebeb6128e294f61c9a155",
     "m2a_cpu/aurel_adapter.py": "ae9987afc59e445af29013e828c4eb082f024fd45116a0bfc0985e315c6f0200",
@@ -15,6 +24,10 @@
     "m2a_cpu/config.py": "ded7c9511abcc66c9c38a152e6d64fc64257b6a74ceab3242255c419d0252c93",
     "m2a_cpu/evaluation.py": "20e9432d4771693345ab07a56ec78e4798b430b48c7ad3875b2d8cf30ee7d83e",
     "m2a_cpu/telemetry.py": "881a145008b7456a49f243ca54b67b2e93219a8dfe18a349d13b15cdf6ffb11a",
+    "requirements.lock.txt": "1331c0dfa9030e67bfda28caf1d52a6eb707e8bdf1f06a44416df24c7299e635",
+    "source-lock.json": "048f2f28d0f5e7b731fec9ef0b15f4e7c7b110be7e53fce36a21ba3a768d895f",
+    "tests/test_evidence_selector.py": "9b9fba05860b25534249c7b0e93be926c436ef06b30da32a2b5ad3504715c88a",
+    "tests/test_service.py": "ee4fea4a15c763d1514e25c370d80149fa5d38fad28d32153505f93d3e0e697e",
     "vendor/aurel/fusion_memory/__init__.py": "27e8febb48ada44153ea2add9969a2c50a9831a74d9755fdd53c549a888b1cc2",
     "vendor/aurel/fusion_memory/__main__.py": "0b650fec843e60e97bba2d17e87d5e4df539f8a800cfcfcc359a60133db120ae",
     "vendor/aurel/fusion_memory/app.py": "ea92cf6890bb353b8528b0b2e1d490c3025e267842a624015b832a8636c4045d",
@@ -23,9 +36,6 @@
     "vendor/aurel/fusion_memory/provider.py": "3a752c16b5e8b1efac2858f3b86f2258d0e1a238716b018d1fbd6c21f2cb4291",
     "vendor/aurel/fusion_memory/retrieval.py": "c44d482e224ac45f3d5d30515ef9243d109dc0c4b54e621e74748d1194369477",
     "vendor/aurel/fusion_memory/schemas.py": "6c1a551b3dd01f0c44fcaeda27c235657a19120f25247d606ecb0d0a516042b0",
-    "vendor/aurel/fusion_memory/storage.py": "2f8a9a32410beac7399582845b453c107c1a30d01967a7c043ef50dbf8db2bdf",
-    "source-lock.json": "e0a35450337d76b2c7715f28c19f7d8f7dd4a5a44b10164f7397040f13f1e897",
-    "requirements.lock.txt": "1331c0dfa9030e67bfda28caf1d52a6eb707e8bdf1f06a44416df24c7299e635",
-    "deploy/run.sh": "803f55043f5ec2fd58ec4974b8abce41f4864ab4891569c32c26973c30dbef68"
+    "vendor/aurel/fusion_memory/storage.py": "2f8a9a32410beac7399582845b453c107c1a30d01967a7c043ef50dbf8db2bdf"
   }
 }

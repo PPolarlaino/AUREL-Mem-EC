@@ -1,11 +1,25 @@
 # AUREL-Mem-EC
 
-Version: `v3-ec-20261030`. An independent deployment of the AUREL-Mem v3 candidate
-with complete-record evidence filling. It exposes synchronous Add/Search only;
-the leaderboard owns Answer and Eval. No GPU or model training is required.
+Version: `v4-support-20261031`. A query-aware evidence selector added to the
+v3 evidence-completion release. Synchronous Add/Search only; AML owns Answer
+and Eval. No GPU or model training is required.
 
-This is a release candidate, not an official leaderboard result. Endpoint
-review, Eval Key issuance and official Smoke/Full are still pending.
+The selector uses `gpt-4o-mini` to classify candidate records as support, bridge,
+limitation, unrelated or uncertain. Only unrelated/topical-only records are
+removed. It never generates an answer and returns an original-order subset of
+unchanged source records and images. Original extraction, hybrid retrieval and
+EC packing remain unchanged. No benchmark IDs or hidden labels affect selection.
+
+Oversize records and uncertain or malformed classifications are retained.
+Transport failures produce service errors, not successful empty evidence.
+Private diagnostics contain counts, labels and hashes, never source content.
+The selector adds bounded Search model calls and may make selection mistakes;
+its accuracy and false-abstention tradeoff require measurement.
+
+The previous v3 official multimodal Smoke scored 3/13 (23.08%), including
+1/9 in the abstention category. This is a tiny compatibility set, not a Full
+leaderboard score. The v4 plan is three runs of the same frozen version, with
+all results reported rather than only the best. No v4 gain is claimed yet.
 Repository: https://github.com/PPolarlaino/AUREL-Mem-EC
 
 ## Provenance and result
@@ -25,11 +39,14 @@ included in this repository.
 ## What is frozen
 
 - The candidate's native extraction/retrieval/storage code is copied unchanged.
+- A bounded 90,000-token-input evidence selector runs after retrieval and before EC.
+  Its five labels do not include any generated answer or instruction to Answer.
 - The experiment's shared source-slot extraction contract and complete-record
   recovery are retained, including strict embedding response validation.
 - The exact evidence reorder prototype and local sizing implementation are
   retained. They run CPU-only with an in-memory dummy response; no final Answer
-  or judge model is called by this service.
+  or judge model is called by this service. The selector is a separate bounded
+  retrieval operation and does call gpt-4o-mini.
 - One generic delivery profile is used for every request. It never inspects
   benchmark labels in user IDs. Up to10 candidates are retrieved, even when AML
   supplies its formal upper bound `top_k=100`; a smaller requested bound is obeyed.
@@ -40,9 +57,9 @@ included in this repository.
   ordering. This leaves the local Answer input unchanged and avoids publishing
   scores which do not describe the returned delivery order.
 
-AML documents a117,760-token Answer input budget and rank-prefix selection.
-Our sizing uses the frozen local conservative estimator, not a claimed exact
-copy of the platform's private packing code. Official gains remain to be tested.
+EC uses a local 117,760-token input estimate and rank-prefix simulation; the
+platform's actual private packing implementation has not been verified. This
+is a local delivery heuristic, not an assertion of exact official equivalence.
 
 ## Run
 
@@ -70,7 +87,8 @@ public version: `GET /version`. Send `Authorization: Token <MEMORY_API_TOKEN>`
 or Bearer for Add/Search. All API errors omit source text and credentials.
 
 Run one worker and publish behind a stable HTTPS reverse proxy/tunnel. Start
-with platform Add/Search concurrency1. Upstream transport is serial,120 seconds
+with the current multimodal contract minimum of 16 for platform Add/Search
+concurrency. Upstream model transport remains serial,120 seconds
 per attempt, with no automatic network retries; native schema correction remains
 bounded and every HTTP attempt is counted. Platform retries can incur new calls;
 the same successful Add request is idempotent. Model request prices are external
